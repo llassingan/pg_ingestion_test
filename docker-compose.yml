@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./ddl:/docker-entrypoint-initdb.d/ddl #ddl
+      - ./dml:/docker-entrypoint-initdb.d/dml #dml
+      - ./init-scripts:/docker-entrypoint-initdb.d #script
+      - ./logs:/var/db/logs:rw #logs
+    command: ["postgres", "-c", "log_statement=all"]
