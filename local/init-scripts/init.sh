@@ -14,7 +14,7 @@ log_message() {
 execute_sql_file() {
     local file=$1
     log_message "Executing file: $file"
-    if PGPASSWORD=$POSTGRES_PASSWORD psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "$file" 2>> "$LOG_FILE"; then
+    if PGPASSWORD=$POSTGRES_PASSWORD psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "$file" 2>> "$LOG_FILE"; then
         log_message "Successfully executed: $file"
     else
         log_message "ERROR: Failed to execute: $file"
@@ -28,7 +28,7 @@ mkdir -p "$(dirname "$LOG_FILE")"
 log_message "Starting database initialization script"
 
 # Wait for the database to be ready
-until PGPASSWORD=$POSTGRES_PASSWORD psql  -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c '\q' 2>> "$LOG_FILE"; do
+until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c '\q' 2>> "$LOG_FILE"; do
     log_message "Postgres is unavailable - sleeping"
     sleep 1
 done

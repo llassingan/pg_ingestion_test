@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ingest
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB_TARGET: database_target
+      POSTGRES_USER_TARGET: username_target
+      POSTGRES_PASSWORD_TARGET: password_target
+      POSTGRES_HOST_TARGET: host_target
+      POSTGRES_PORT_TARGET: 5432
+    volumes:
+      - ./ddl:/docker-entrypoint-initdb.d/ddl #ddl
+      - ./dml:/docker-entrypoint-initdb.d/dml #dml
+      - ./init-scripts:/docker-entrypoint-initdb.d #script
+      - ./logs:/var/db/logs:rw #logs
+    command: ["postgres", "-c", "log_statement=all"]
