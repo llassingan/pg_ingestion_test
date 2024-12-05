@@ -177,6 +177,6 @@ def process_sql_file(input_file, output_file):
         f.write(new_sql)
 
 # Usage
-input_file = 'individu.sql'
+input_file = 'input.sql'
 output_file = 'output.sql'
 process_sql_file(input_file, output_file)
